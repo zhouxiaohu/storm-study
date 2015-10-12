@@ -1,0 +1,7 @@
+IntegerSpout：产生0-10的整数，奇数emit给id为single的stream，偶数emit给id为double的stream。
+
+StringSpout：产生字符串信息并emit出去。
+
+ReceiveSingleBolt：处理IntegerSpout发送过来的奇数。
+
+ReceiveAllBolt：处理IntegerSpout发送过来的偶数和StringSpout发送过来的所有数据。
