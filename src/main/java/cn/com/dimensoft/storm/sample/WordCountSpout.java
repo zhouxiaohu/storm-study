@@ -1,4 +1,11 @@
-package cn.com.dimensoft.storm;
+/**
+  * project：storm-test
+  * file：WordCountSpout.java
+  * author：zxh
+  * time：2015年9月23日 上午11:02:05
+  * description：
+  */
+package cn.com.dimensoft.storm.sample;
 
 import java.util.Map;
 
@@ -10,16 +17,13 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 
 /**
- * 
- * class： IntegerSpout
+ * class： WordCountSpout
  * package： cn.com.dimensoft.storm
  * author：zxh
- * time： 2015年10月12日 上午11:03:23
- * description：产生0-10的整数
- * 	奇数emit给id为single的stream
- * 	偶数emit给id为double的stream
+ * time： 2015年9月23日 上午11:02:05
+ * description： 
  */
-public class IntegerSpout extends BaseRichSpout {
+public class WordCountSpout extends BaseRichSpout {
 
 	/**
 	 * long:serialVersionUID
@@ -28,6 +32,15 @@ public class IntegerSpout extends BaseRichSpout {
 	private static final long serialVersionUID = 1716894015367004238L;
 
 	private SpoutOutputCollector collector;
+
+	private String[] words = {//
+			"hello hadoop", //
+			"what is your name", //
+			"my name is hanmeimei",//
+			"what about you", //
+			"hehehehe my name is lilei", //
+			"oh shit" //
+	};
 
 	private int index = 0;
 
@@ -42,24 +55,22 @@ public class IntegerSpout extends BaseRichSpout {
 	@Override
 	public void nextTuple() {
 
-		if (index < 10) {
-			if (index % 2 == 1) {
-//				奇数发送给id为single的stream
-				collector.emit("single", new Values(index));
-			} else {
-//				偶数发送给id为double的stream
-				collector.emit("double", new Values(index));
-			}
+		if (index < words.length) {
+			// 将每行数据传递给下一个组件，即WordSplitBolt
+			collector.emit(new Values(words[index++]));
+		}
 
-			index++;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		// 声明传递数据的变量名以及所在stream的id
-		declarer.declareStream("single", new Fields("number"));
-		declarer.declareStream("double", new Fields("number"));
+		// 声明传递数据的变量名
+		declarer.declare(new Fields("line"));
 	}
 
 }

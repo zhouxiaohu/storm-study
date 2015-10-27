@@ -1,4 +1,4 @@
-package cn.com.dimensoft.storm;
+package cn.com.dimensoft.storm.complex;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
@@ -57,7 +57,7 @@ public class MyTopology {
 		builder.setBolt("ReceiveAllBolt", //
 				new ReceiveAllBolt()).//
 				shuffleGrouping("IntegerSpout", "double").//
-				allGrouping("StringSpout");
+				globalGrouping("StringSpout");
 
 		// 本地运行或者提交到集群
 		if (args != null && args.length == 1) {

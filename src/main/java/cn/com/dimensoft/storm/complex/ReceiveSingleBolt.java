@@ -1,4 +1,4 @@
-package cn.com.dimensoft.storm;
+package cn.com.dimensoft.storm.complex;
 
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
